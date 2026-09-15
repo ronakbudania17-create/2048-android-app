@@ -11,15 +11,20 @@ The 2048 game as a native-feeling Android app (WebView wrapper):
 
 ## Building the APK
 
-The APK is built automatically by GitHub Actions on every push to `main`
-(workflow: `.github/workflows/build-apk.yml`). The finished APK is uploaded
-as a build artifact named `2048-APK`, and attached to Releases as
-`2048.apk`.
+The game source lives as a release asset ([game.html](https://github.com/ronakbudania17-create/2048-android-app/releases/download/v1.0/game.html),
+verified by SHA-256 at build time). On every push to `main`, GitHub Actions
+(workflow: `.github/workflows/build-apk.yml`) downloads it into
+`app/src/main/assets/index.html`, builds a release APK with Gradle, and
+uploads it as the `2048-APK` build artifact. The signed APK is also attached
+to the [v1.0 release](https://github.com/ronakbudania17-create/2048-android-app/releases/tag/v1.0)
+as `2048.apk`.
 
-To build manually: open in Android Studio, or run `gradle assembleRelease`.
+To build manually: download `game.html` from the release into
+`app/src/main/assets/index.html`, then open in Android Studio or run
+`gradle assembleRelease`.
 
 ## Structure
 
-- `app/src/main/assets/index.html` — the entire game (single self-contained file)
+- `app/src/main/assets/index.html` — the entire game (fetched from the release at build time)
 - `app/src/main/java/.../MainActivity.java` — WebView host activity
 - `.github/workflows/build-apk.yml` — CI build

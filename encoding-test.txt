@@ -1,5 +1,0 @@
-line one with "double quotes" and 'single'
-line two: <html lang="en">
-line three: 100% done
-line four: back\slash and {braces}
-line five: emoji test ▲ ♪ ✦
