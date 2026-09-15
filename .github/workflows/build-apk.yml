@@ -23,13 +23,17 @@ jobs:
         with:
           gradle-version: '8.7'
 
-      - name: Download game asset
+      - name: Fetch game and icon assets
         run: |
           mkdir -p app/src/main/assets
           curl -sL --fail "https://github.com/ronakbudania17-create/2048-android-app/releases/download/v1.0/game.html" -o app/src/main/assets/index.html
           echo "261a33a43af913135c532e6bf61d03c4c38ece1e82b554484919962b36303600  app/src/main/assets/index.html" | sha256sum -c -
           grep -q "CORE-LOGIC-START" app/src/main/assets/index.html
-          echo "Game asset verified."
+          curl -sL --fail "https://github.com/ronakbudania17-create/2048-android-app/releases/download/v1.0/res-icons.zip" -o /tmp/res-icons.zip
+          echo "9e0c0a3c98f2b1d67f8ec31e4f62815a1e11af5311b073764e71162fb65d3c75  /tmp/res-icons.zip" | sha256sum -c -
+          unzip -o /tmp/res-icons.zip
+          python3 -c "from PIL import Image; [Image.open(f'app/src/main/res/mipmap-{d}/ic_launcher.png').verify() for d in ['mdpi','hdpi','xhdpi','xxhdpi','xxxhdpi']]" || pip install pillow -q && python3 -c "from PIL import Image; [Image.open(f'app/src/main/res/mipmap-{d}/ic_launcher.png').verify() for d in ['mdpi','hdpi','xhdpi','xxhdpi','xxxhdpi']]"
+          echo "Assets verified."
 
       - name: Build release APK
         run: gradle assembleRelease --no-daemon
